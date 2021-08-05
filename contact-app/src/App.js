@@ -3,6 +3,7 @@ import { uuid } from 'uuidv4';
 import './App.css';
 import AddContact from './components/AddContact';
 import ContactList from './components/ContactList';
+import api from './components/api/contacts'
 import { Switch } from 'react-router';
 import {
   BrowserRouter as Router,Route} from "react-router-dom";
@@ -16,11 +17,23 @@ function App() {
   const LOCAL_STORAGE_KEY = "contacts";
   
   const [contacts, setContacts] = useState([]);
+
+   
+
+  const retrieveContacts = async ()  =>{
+    const response = await api.get("/contacts");
+    return response;
+
+  };
+ 
   const AddContactHandler = (contact) =>{
 
     console.log(contact);
     setContacts([...contacts, { id: uuid(), ...contact}]);
-   
+    
+    //retrieveContacts
+
+ 
   };
 
 const removerContactHandler = (id) =>{
@@ -33,9 +46,18 @@ const removerContactHandler = (id) =>{
 }
 
   useEffect(()=> { 
-    const retriveContacts = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
+
+   // const retriveContacts = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
    
-    if (retriveContacts) setContacts(retriveContacts);
+   // if (retriveContacts) setContacts(retriveContacts);
+
+   const getAllContacts = async() =>{
+     const allContacts = await retrieveContacts();
+
+     if(allContacts) setContacts(allContacts);
+   };
+
+   getAllContacts();
   
   }, []);
  
