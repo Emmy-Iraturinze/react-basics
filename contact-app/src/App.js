@@ -18,20 +18,23 @@ function App() {
   
   const [contacts, setContacts] = useState([]);
 
-   
+   //retrieveContacts  
 
   const retrieveContacts = async ()  =>{
     const response = await api.get("/contacts");
-    return response;
+    return response.data;
 
   };
- 
+
+
   const AddContactHandler = (contact) =>{
 
     console.log(contact);
+
+
     setContacts([...contacts, { id: uuid(), ...contact}]);
     
-    //retrieveContacts
+    
 
  
   };
@@ -51,7 +54,7 @@ const removerContactHandler = (id) =>{
    
    // if (retriveContacts) setContacts(retriveContacts);
 
-   const getAllContacts = async() =>{
+   const getAllContacts = async() => {
      const allContacts = await retrieveContacts();
 
      if(allContacts) setContacts(allContacts);
